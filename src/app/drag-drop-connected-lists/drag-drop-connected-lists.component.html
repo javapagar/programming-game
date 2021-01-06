@@ -1,0 +1,27 @@
+<div class="container">
+    <h2>Acciones</h2>
+    <ul
+      cdkDropList
+      #accionesList="cdkDropList"
+      [cdkDropListData]="acciones"
+      [cdkDropListConnectedTo]="[ejecutableList]"
+      class="list-group void-list"
+      (cdkDropListDropped)="drop($event)">
+      <li class="list-group-item" *ngFor="let item of acciones" cdkDrag>{{item}}</li>
+    </ul>
+</div>
+  
+<div class="container">
+    <h2>Ejecutable</h2>
+  
+    <ul
+      cdkDropList
+      #ejecutableList="cdkDropList"
+      [cdkDropListData]="accionesEjecutables"
+      [cdkDropListConnectedTo]="[accionesList]"
+      class="list-group void-list"
+      (cdkDropListDropped)="drop($event)">
+      <li class="list-group-item" *ngFor="let item of accionesEjecutables" cdkDrag>{{item}}</li>
+  </ul>
+
+</div>
