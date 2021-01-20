@@ -3,11 +3,11 @@
     <ul
       cdkDropList
       #accionesList="cdkDropList"
-      [cdkDropListData]="acciones"
+      [cdkDropListData]="actions"
       [cdkDropListConnectedTo]="[ejecutableList]"
       class="list-group void-list"
       (cdkDropListDropped)="drop($event)">
-      <li #accionitem class="list-group-item" *ngFor="let item of acciones" cdkDrag>{{item}}</li>
+      <li #accionitem class="list-group-item" *ngFor="let item of actions" cdkDrag>{{item?.label}}</li>
     </ul>
 </div>
   
@@ -17,11 +17,11 @@
     <ul
       cdkDropList
       #ejecutableList="cdkDropList"
-      [cdkDropListData]="accionesEjecutables"
+      [cdkDropListData]="actionsToExe"
       [cdkDropListConnectedTo]="[accionesList]"
       class="list-group void-list"
       (cdkDropListDropped)="drop($event)">
-      <li #accionitem class="list-group-item" *ngFor="let item of accionesEjecutables" cdkDrag>{{item}}</li>
+      <li #accionitem class="list-group-item" *ngFor="let item of actionsToExe" cdkDrag>{{item?.label}}</li>
   </ul>
 
 </div>

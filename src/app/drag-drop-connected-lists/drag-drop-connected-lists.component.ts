@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { DropItem } from '../clases/drop-item';
 
 
 
@@ -9,12 +10,10 @@ import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren }
   styleUrls: ['./drag-drop-connected-lists.component.css']
 })
 export class DragDropConnectedListsComponent implements OnInit, AfterViewInit {
-  acciones = [
-    'Andar',
-    'Abrir',
-    'Girar',
-    'mirar'
-  ];
+ 
+  actions : any[];
+  actionsToExe : any [] =[];
+  
   @ViewChildren ("accionitem", {read : ElementRef}) accionlist:  QueryList<ElementRef>;
   accionesEjecutables = [
     
@@ -22,11 +21,15 @@ export class DragDropConnectedListsComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.actions=[new DropItem("correr"), 
+    new DropItem("saltar"), 
+    new DropItem("abrir"),
+    new DropItem("coger")]
   }
    ngAfterViewInit(): void {
      //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
      //Add 'implements AfterViewInit' to the class.
-     console.log(this.accionlist)
+     //console.log(this.actionsToExe)
      //this.accionlist.nativeElement.focus();
    }
   drop (event: CdkDragDrop<any[]>){
@@ -37,11 +40,17 @@ export class DragDropConnectedListsComponent implements OnInit, AfterViewInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+        
+        if(event.previousContainer.id==="cdk-drop-list-0"){
+          this.actionsToExe=event.container.data;
+        }
+        console.log(this.actionsToExe);
+        console.log(event.previousContainer.id);
     }
     //this.ngAfterViewInit();
   }
 
   ejecutar(){
-    console.log(this.accionlist.first.nativeElement.value);
+    this.actionsToExe.forEach(item => console.log(item?.label));
   }
 }

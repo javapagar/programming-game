@@ -1,3 +1,4 @@
+import { DropItem } from './../clases/drop-item';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,13 +10,18 @@ import { Component, OnInit } from '@angular/core';
 export class DragDropListComponent implements OnInit {
 
   public ACCIONES =["correr", "saltar", "abrir","coger"];
+  public actions : Array <any>;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.actions=[new DropItem("correr"), 
+    new DropItem("saltar"), 
+    new DropItem("abrir"),
+    new DropItem("coger")]
   }
 
   drop(event:CdkDragDrop<any>){
-    moveItemInArray(this.ACCIONES,event.previousIndex,event.currentIndex);
+    moveItemInArray(this.actions,event.previousIndex,event.currentIndex);
   }
 }

@@ -1,6 +1,6 @@
 <div class="container">
-    <ul class="list-group" cdkDropList (cdkDropListDropped) = "drop($event)">
-        <li class="list-group-item" *ngFor="let accion of ACCIONES" cdkDrag> {{ accion }} </li>
-    </ul>  
+    <div class="list-group" cdkDropList (cdkDropListDropped) = "drop($event)">
+        <div class="list-group-item" *ngFor="let accion of actions" cdkDrag> {{ accion?.label }} </div>
+    </div>  
 </div>
 
