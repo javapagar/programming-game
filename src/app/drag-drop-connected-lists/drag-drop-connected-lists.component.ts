@@ -21,10 +21,10 @@ export class DragDropConnectedListsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.actions=[new DropItem("correr"), 
-    new DropItem("saltar"), 
-    new DropItem("abrir"),
-    new DropItem("coger")]
+    this.actions=[new DropItem(1,"avanzar",["arriba","abajo","izquierda","derecha"]), 
+    new DropItem(2,"saltar"), 
+    new DropItem(3,"abrir"),
+    new DropItem(4,"coger")]
   }
 
   drop (event: CdkDragDrop<any[]>){
@@ -36,7 +36,7 @@ export class DragDropConnectedListsComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
         
-        if(event.previousContainer.id==="cdk-drop-list-0"){
+        if(event.previousContainer.id === "cdk-drop-list-0"){
           this.actionsToExe=event.container.data;
         }
         console.log(this.actionsToExe);
@@ -45,10 +45,21 @@ export class DragDropConnectedListsComponent implements OnInit {
     //this.ngAfterViewInit();
   }
 
-  ejecutar(){
-    this.actionsToExe.forEach(item => {
+  async ejecutar(){
+    /*this.actionsToExe.forEach(item => {
           this.actionService.setAction(item);
-    });
-    
+          this.delay(20000);
+          this.actionService.setAction(new DropItem("stop"));
+    });*/
+    for (let index = 0; index < this.actionsToExe.length; index++) {
+        this.actionService.setAction(this.actionsToExe[index]);
+        await this.delay(1000);
+        this.actionService.setAction(new DropItem(999,"stop"));
+      
+    }
+  }
+
+  delay(ms: number) :any {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

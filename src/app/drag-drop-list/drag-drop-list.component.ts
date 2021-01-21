@@ -15,10 +15,10 @@ export class DragDropListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.actions=[new DropItem("correr"), 
-    new DropItem("saltar"), 
-    new DropItem("abrir"),
-    new DropItem("coger")]
+    this.actions=[new DropItem(1,"correr"), 
+    new DropItem(2,"saltar"), 
+    new DropItem(3,"abrir"),
+    new DropItem(4,"coger")]
   }
 
   drop(event:CdkDragDrop<any>){

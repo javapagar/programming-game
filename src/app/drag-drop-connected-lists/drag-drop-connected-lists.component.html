@@ -7,13 +7,15 @@
       [cdkDropListConnectedTo]="[ejecutableList]"
       class="list-group void-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="list-group-item" *ngFor="let item of actions" cdkDrag>{{item?.label}}</div>
+      <div class="list-group-item" *ngFor="let item of actions" cdkDrag>
+        {{item?.label}}
+      
+      </div>
   </div>
 </div>
   
 <div class="container">
     <h2>Ejecutable</h2>
-  
     <div
       cdkDropList
       #ejecutableList="cdkDropList"
@@ -21,9 +23,15 @@
       [cdkDropListConnectedTo]="[accionesList]"
       class="list-group void-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="list-group-item" *ngFor="let item of actionsToExe" cdkDrag>{{item?.label}}</div>
+      <div class="list-group-item" *ngFor="let item of actionsToExe" cdkDrag>
+        {{item?.label}}
+        <div *ngIf="item.options.length > 0">
+          <select [(ngModel)]="item.paramSelected" class="form-select form-select-sm" >
+            <option [value]="param"  *ngFor="let param of item.options; index as i" [selected]="i == 0">{{param}}</option>
+          </select>
+        </div>
+      </div>
 </div>
-
 </div>
 <div class="container">
   <button type="button" class="btn btn-primary" (click)="ejecutar()">Ejecutar</button>

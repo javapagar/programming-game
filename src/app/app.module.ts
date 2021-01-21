@@ -9,6 +9,7 @@ import { DragDropModule } from'@angular/cdk/drag-drop';
 import { DragDropConnectedListsComponent } from './drag-drop-connected-lists/drag-drop-connected-lists.component';
 import { ActionService } from './services/action.service';
 import { GameScene } from './gameScene';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +20,8 @@ import { GameScene } from './gameScene';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    DragDropModule
+    DragDropModule,
+    FormsModule
   ],
   providers: [
     ActionService,

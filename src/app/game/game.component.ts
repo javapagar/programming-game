@@ -52,7 +52,7 @@ export class GameComponent implements OnInit{
       physics: {
         default: 'arcade',
         arcade: {
-          gravity: { y: 100 }
+          gravity: { y: 0 }
         }
       }
     };
@@ -72,14 +72,17 @@ export class GameComponent implements OnInit{
 
   executeAction(){
     switch (this.action.label) {
-      case "correr":
-        console.log("corre")
+      case "avanzar":
+        console.log("avanza")
+        //this.phaserGame.scene.scenes[this.levelScene].action=1;
+        this.phaserGame.scene.scenes[this.levelScene].actionObject = this.action;
         break;
       case "saltar":
         console.log("salta")
         break;
       default:
-        console.log("no reconocido")
+        console.log(this.action.label)
+        this.phaserGame.scene.scenes[this.levelScene].action=0;
         break;
     }
     
