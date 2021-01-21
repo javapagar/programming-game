@@ -1,28 +1,28 @@
 <div class="container">
     <h2>Acciones</h2>
-    <ul
+    <div
       cdkDropList
       #accionesList="cdkDropList"
       [cdkDropListData]="actions"
       [cdkDropListConnectedTo]="[ejecutableList]"
       class="list-group void-list"
       (cdkDropListDropped)="drop($event)">
-      <li #accionitem class="list-group-item" *ngFor="let item of actions" cdkDrag>{{item?.label}}</li>
-    </ul>
+      <div class="list-group-item" *ngFor="let item of actions" cdkDrag>{{item?.label}}</div>
+  </div>
 </div>
   
 <div class="container">
     <h2>Ejecutable</h2>
   
-    <ul
+    <div
       cdkDropList
       #ejecutableList="cdkDropList"
       [cdkDropListData]="actionsToExe"
       [cdkDropListConnectedTo]="[accionesList]"
       class="list-group void-list"
       (cdkDropListDropped)="drop($event)">
-      <li #accionitem class="list-group-item" *ngFor="let item of actionsToExe" cdkDrag>{{item?.label}}</li>
-  </ul>
+      <div class="list-group-item" *ngFor="let item of actionsToExe" cdkDrag>{{item?.label}}</div>
+</div>
 
 </div>
 <div class="container">

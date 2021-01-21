@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { DragDropListComponent } from './drag-drop-list/drag-drop-list.component';
 import { DragDropModule } from'@angular/cdk/drag-drop';
 import { DragDropConnectedListsComponent } from './drag-drop-connected-lists/drag-drop-connected-lists.component';
+import { ActionService } from './services/action.service';
+import { GameScene } from './gameScene';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +21,9 @@ import { DragDropConnectedListsComponent } from './drag-drop-connected-lists/dra
     AppRoutingModule,
     DragDropModule
   ],
-  providers: [],
+  providers: [
+    ActionService,
+  ],
   bootstrap: [AppComponent],
   /*schemas: [CUSTOM_ELEMENTS_SCHEMA]*/
 })

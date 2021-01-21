@@ -2,6 +2,10 @@ import { GameScene } from './../gameScene';
 import { Component, OnInit } from '@angular/core';
 import * as Phaser from 'phaser';
 
+import { ActionService } from '../services/action.service';
+import { Observable } from 'rxjs';
+import { DropItem } from '../clases/drop-item';
+
 class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: 'main' });
@@ -26,9 +30,14 @@ class MainScene extends Phaser.Scene {
 })
 export class GameComponent implements OnInit{
   
-  phaserGame: Phaser.Game | undefined;
+  phaserGame: Phaser.Game;
   config: Phaser.Types.Core.GameConfig ;
-  constructor() {
+  
+  action : DropItem;
+  action$ : Observable<DropItem>;
+
+  levelScene : number=0;
+  constructor(private actionService : ActionService) {
     this.config = {
       type: Phaser.AUTO,
       scale: {
@@ -37,7 +46,7 @@ export class GameComponent implements OnInit{
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 600,
         height: 400
-    },
+      },
       scene: [ GameScene, MainScene ],
       parent: 'gameContainer',
       physics: {
@@ -49,7 +58,30 @@ export class GameComponent implements OnInit{
     };
   }
   
+
   ngOnInit() {
+    this.action$ = this.actionService.getAction$();
+    this.action$.subscribe(action => {
+      this.action = action;
+      this.executeAction();
+    });
     this.phaserGame = new Phaser.Game(this.config);
+    
+  }
+
+
+  executeAction(){
+    switch (this.action.label) {
+      case "correr":
+        console.log("corre")
+        break;
+      case "saltar":
+        console.log("salta")
+        break;
+      default:
+        console.log("no reconocido")
+        break;
+    }
+    
   }
 }

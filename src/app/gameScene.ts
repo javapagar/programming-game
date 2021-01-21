@@ -1,12 +1,16 @@
 import * as Phaser from 'phaser';
 
+
+
 export class GameScene extends Phaser.Scene{
 
-    //ball?: Phaser.Physics.Arcade.Image;
-    ball?:Phaser.GameObjects.Sprite;
-    pushedKey?: Phaser.Types.Input.Keyboard.CursorKeys;
+
+    ball:Phaser.GameObjects.Sprite;
+    pushedKey: Phaser.Types.Input.Keyboard.CursorKeys;
+
     constructor() {
         super({ key: 'gameScene' });
+        
     }
      
     preload() {
@@ -30,29 +34,40 @@ export class GameScene extends Phaser.Scene{
         
         //recoge las pulsaciones de teclado
         this.pushedKey = this.input.keyboard.createCursorKeys();
+
+        /*this.action$ = this.actionService.getAction$();
+        this.action$.subscribe(action => this.action = action);*/
+
     }
 
     update() {
-        if(this.pushedKey?.left.isDown){
+        if(this.pushedKey.left.isDown){
             //this.ball?.setVelocityX(-100);//physics
-            this.ball?.setPosition(this.ball.x-2,this.ball.y);
+            //this.ball.setPosition(this.ball.x-2,this.ball.y);
+            this.moveLeft();
         }
 
-        if(this.pushedKey?.right.isDown){
+        if(this.pushedKey.right.isDown){
             //this.ball?.setVelocityX(100);//Physics
-            this.ball?.setPosition(this.ball.x+2,this.ball.y);
+            this.ball.setPosition(this.ball.x+2,this.ball.y);
         }
 
-        if(this.pushedKey?.down.isDown){
+        if(this.pushedKey.down.isDown){
             //this.ball?.setVelocityX(0);
-            this.ball?.setPosition(this.ball.x,this.ball.y+2);
+            this.ball.setPosition(this.ball.x,this.ball.y+2);
         }
 
-        if(this.pushedKey?.up.isDown){
-            this.ball?.setPosition(this.ball.x,this.ball.y-2);
+        if(this.pushedKey.up.isDown){
+            this.ball.setPosition(this.ball.x,this.ball.y-2);
            // this.ball?.setVelocity(0,10);
             
         }
+        
+
+        
     }
 
+    moveLeft(){
+        this.ball.setPosition(this.ball.x-2,this.ball.y);
+    }
 }
