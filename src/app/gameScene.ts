@@ -11,6 +11,8 @@ export class GameScene extends Phaser.Scene{
     platform : Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     pushedKey: Phaser.Types.Input.Keyboard.CursorKeys;
     actionObject : DropItem;
+    map : Phaser.Tilemaps.Tilemap;
+    layer : Phaser.Tilemaps.TilemapLayer;
     action : number =0;
     moveTime:number=0;
     constructor() {
@@ -20,30 +22,38 @@ export class GameScene extends Phaser.Scene{
      
     preload() {
         console.log('preload method');
-        this.load.image('background','../assets/images/background.png');
-        this.load.image('track','../assets/images/track_1.png');
+        //this.load.image('track','../assets/images/track_1.png');
+        this.load.image('terrain','../assets/images/terrain_atlas.png')
+        this.load.tilemapTiledJSON('map','../assets/images/map1.json')
         this.load.image('ball','../assets/images/ball.png');
-        this.load.image('platform', '../assets/images/platform.png');
     }
     
     create() {
         /*console.log('create method');
         let text = "Hola desde la escena inicial!";
         this.add.text(0, 0, text)*/
-        this.add.image(300,200,'background');//precarga del fondo
-        this.add.image(200,200,'track');
-        //this.add.image(200,200,'platform')
+        //this.add.image(300,200,'background');//precarga del fondo
+        this.map = this.add.tilemap('map');
+        let terrain=this.map.addTilesetImage('terrain_atlas','terrain');
+
+        let groundLayer= this.map.createLayer("ground",[terrain],0,0);
+        let trackLayer=this.map.createLayer("track",[terrain],0,0);
+        let wallLayer=this.map.createLayer("wall",[terrain],0,0);
         
-        this.platform = this.physics.add.image(50, 300, 'platform').setImmovable();
-        this.platform.body.setAllowGravity(false);
+        //this.add.image(200,200,'track');
+
+        
         //bola con rebote
-        this.ball=this.physics.add.image(40,150,'ball');
-        this.ball.body.setAllowGravity(false);
+        this.ball=this.physics.add.sprite(0,165,'ball');
+        //this.ball.body.setAllowGravity(false);
         //this.ball=this.add.sprite(200,200,'ball');
         this.ball.setCollideWorldBounds(true);//el marco del canvas hace de límite
         //this.ball.setBounce(1);//fuerza del rebote
-        this.physics.add.collider(this.ball, this.platform);
-        
+        this.physics.add.collider(this.ball,wallLayer);
+
+        //this.map.setCollisionByProperty({collides  : true});//lee la propiedad del json del mapa
+        //this.map.setCollision(3,true);
+        //wallLayer.setCollisionBetween(3370,3374)//funciona
         //recoge las pulsaciones de teclado
         this.pushedKey = this.input.keyboard.createCursorKeys();
 
