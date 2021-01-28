@@ -52,7 +52,8 @@ export class GameComponent implements OnInit{
       physics: {
         default: 'arcade',
         arcade: {
-          gravity: { y: 0.1 }
+          debug: true,
+          gravity: {y:0.0}
         }
       }
     };
