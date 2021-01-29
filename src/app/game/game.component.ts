@@ -44,8 +44,8 @@ export class GameComponent implements OnInit{
         mode: Phaser.Scale.FIT,
         //parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 600,
-        height: 400
+        width: 320,
+        height: 320
       },
       scene: [ GameScene, MainScene ],
       parent: 'gameContainer',

@@ -48,10 +48,13 @@ export class GameScene extends Phaser.Scene{
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
         });*/
         
-        this.ball=this.physics.add.sprite(0,165,'ball');
+        this.ball=this.physics.add.sprite(30,165,'ball');
         this.ball.setCollideWorldBounds(true);//el marco del canvas hace de límite
         //this.ball.setBounce(1);//fuerza del rebote
-        this.physics.add.collider(this.ball,wallLayer);
+        this.physics.add.collider(this.ball,wallLayer,()=>{
+            this.setStopAction();
+        });
+
 
         //recoge las pulsaciones de teclado
         this.pushedKey = this.input.keyboard.createCursorKeys();
@@ -61,7 +64,7 @@ export class GameScene extends Phaser.Scene{
     }
 
     update() {
-        this.ball.setGravity(0);
+        //this.ball.setGravity(0);
         this.ball.body.setVelocity(0,0);
         if(this.pushedKey.left.isDown){
             this.ball.setGravity(0.1)
@@ -107,30 +110,32 @@ export class GameScene extends Phaser.Scene{
         }else if(this.actionObject.id ==2){
            
         }
-       
+        
         
     }
 
     private moveLeft(){
         this.ball.setVelocity(this.velocity * -1,0);
-        if(this.moveTime == 0) this.moveTime=10;
+        //if(this.moveTime == 0) this.moveTime=10;
     }
     private moveRight(){
         this.ball.setVelocity(this.velocity,0);
-        if(this.moveTime == 0) this.moveTime=10;
+        //if(this.moveTime == 0) this.moveTime=10;
     }
     private moveUp(){
         this.ball.setVelocity(0,this.velocity * -1);
-        if(this.moveTime == 0) this.moveTime=10;
+        //if(this.moveTime == 0) this.moveTime=10;
     }
 
     private moveDown(){
         this.ball.setVelocity(0,this.velocity);
-        if(this.moveTime == 0) this.moveTime=10;
+        //if(this.moveTime == 0) this.moveTime=10;
     }
 
     private setStopAction(){
         this.actionObject=new DropItem(999,"stop");
         this.moveTime=0;
     }
+
+
 }
