@@ -6,11 +6,11 @@ import { DropItem } from './clases/drop-item';
 export class GameScene extends Phaser.Scene{
 
 
-    //ball:Phaser.GameObjects.Sprite;
+    star:Phaser.GameObjects.Image;
     //ball : Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     //ball : Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     anna : Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-    dude : Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    //dude : Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     pushedKey: Phaser.Types.Input.Keyboard.CursorKeys;
     actionObject : DropItem;
     map : Phaser.Tilemaps.Tilemap;
@@ -28,15 +28,15 @@ export class GameScene extends Phaser.Scene{
         //this.load.image('track','../assets/images/track_1.png');
         this.load.image('terrain','../assets/images/terrain_atlas.png')
         this.load.tilemapTiledJSON('map','../assets/images/map1.json')
-        this.load.spritesheet('player','../assets/images/dude.png',{
+        this.load.spritesheet('anna','../assets/images/Male.png',{
             frameWidth: 32,
-            frameHeight: 48
+            frameHeight: 32
         })
-        this.load.spritesheet('anna','../assets/images/anna.png',{
+        /*this.load.spritesheet('anna','../assets/images/anna.png',{
             frameWidth: 64,
             frameHeight: 64
-        })
-        this.load.image('ball','../assets/images/ball.png');
+        })*/
+        this.load.image('star','../assets/images/star.png');
     }
     
     create() {
@@ -50,6 +50,7 @@ export class GameScene extends Phaser.Scene{
         
         wallLayer.setCollisionByProperty({collides: true});
         
+
         //Colerea los muros para el debug
        /* const debugGraphics = this.add.graphics().setAlpha(0.75);
         this.map.renderDebug(debugGraphics, {
@@ -65,9 +66,13 @@ export class GameScene extends Phaser.Scene{
             this.setStopAction();
         });*/
         
+        this.star=this.add.image(280,230, "star")
+        
+       
+
         //animaciones del dude
 
-        this.dude = this.physics.add.sprite(50,165,"player")
+        /*this.dude = this.physics.add.sprite(50,165,"player")
 
         this.physics.add.collider(this.dude,wallLayer,()=>{
             this.setStopAction();
@@ -76,70 +81,73 @@ export class GameScene extends Phaser.Scene{
         this.anims.create({
                 key: "right",
                 frameRate: 10,
-                frames : this.anims.generateFrameNumbers("player",{ start: 7, end: 8}),
+                frames : this.anims.generateFrameNumbers("player",{ start: 6, end: 8}),
                 repeat : -1
             })
         this.anims.create({
                 key: "stop",
                 frameRate: 20,
-                frames : [{ key: "player", frame :4}]
+                frames : [{ key: "player", frame :7}]
                
             })
             this.anims.create({
                 key: "left",
                 frameRate: 10,
-                frames : this.anims.generateFrameNumbers("player",{ start: 0, end: 3}),
+                frames : this.anims.generateFrameNumbers("player",{ start: 3, end: 5}),
                 repeat : -1
-            })
-       //animaciones de anna
+            })*/
+       //animaciones
 
-       this.anna = this.physics.add.sprite(100,165,"anna")
+       this.anna = this.physics.add.sprite(30,165,"anna")
+       
 
        this.physics.add.collider(this.anna,wallLayer,()=>{
            this.setStopAction();
        });
    
+        this.physics.add.overlap(this.anna,this.star,() =>{
+            this.pickUpStar()
+        })
        this.anims.create({
                key: "rightAnna",
                frameRate: 10,
-               frames : this.anims.generateFrameNumbers("anna",{ start: 27, end: 35}),
+               frames : this.anims.generateFrameNumbers("anna",{ start: 6, end: 8}),
                repeat : -1
            })
        this.anims.create({
                key: "stopAnna",
                frameRate: 20,
-               frames : [{ key: "anna", frame :18}]
+               frames : [{ key: "anna", frame :7}]
               
            })
            this.anims.create({
                key: "leftAnna",
                frameRate: 10,
-               frames : this.anims.generateFrameNumbers("anna",{ start: 17, end: 9}),
+               frames : this.anims.generateFrameNumbers("anna",{ start: 3, end: 5}),
                repeat : -1
            })
            this.anims.create({
             key: "up",
             frameRate: 10,
-            frames : this.anims.generateFrameNumbers("anna",{ start: 0, end: 8}),
+            frames : this.anims.generateFrameNumbers("anna",{ start: 9, end: 11}),
             repeat : -1
         })
         this.anims.create({
             key: "down",
             frameRate: 10,
-            frames : this.anims.generateFrameNumbers("anna",{ start: 18, end: 26}),
+            frames : this.anims.generateFrameNumbers("anna",{ start: 0, end: 2}),
             repeat : -1
         })
         //recoge las pulsaciones de teclado
         this.pushedKey = this.input.keyboard.createCursorKeys();
 
-       
 
     }
 
     update() {
         //this.ball.setGravity(0);
         //this.ball.body.setVelocity(0,0);
-        this.dude.body.setVelocity(0,0);
+        //this.dude.body.setVelocity(0,0);
       
         if(this.pushedKey.left.isDown){
             //this.ball.setGravity(0.1)
@@ -179,7 +187,7 @@ export class GameScene extends Phaser.Scene{
             this.moveTime --;
             if(this.moveTime == 0){
                 this.setStopAction();
-
+                this.anna.setVelocity(0,0)
             }
             
             //console.log(this.moveTime);
@@ -188,26 +196,26 @@ export class GameScene extends Phaser.Scene{
         }
         
         if(this.actionObject.label == "stop"){
-            this.dude.anims.play("stop",true)
+            //this.dude.anims.play("stop",true)
             this.anna.anims.play("stopAnna",true)
         }
     }
 
     private moveLeft(){
         //this.ball.setVelocity(this.velocity * -1,0);
-        this.dude.setVelocity(this.velocity * -1,0);
-        this.dude.anims.play("left",true)
+        /*this.dude.setVelocity(this.velocity * -1,0);
+        this.dude.anims.play("left",true)*/
         this.anna.setVelocity(this.velocity * -1,0);
         this.anna.play("leftAnna",true)
         //if(this.moveTime == 0) this.moveTime=10;
     }
     private moveRight(){
         //this.ball.setVelocity(this.velocity,0);
-        this.dude.setVelocity(this.velocity,0);
-        this.dude.anims.play("right",true)
+        /*this.dude.setVelocity(this.velocity,0);
+        this.dude.anims.play("right",true)*/
         this.anna.setVelocity(this.velocity,0);
         this.anna.anims.play("rightAnna",true)
-        //if(this.moveTime == 0) this.moveTime=10;
+        if(this.moveTime == 0) this.moveTime=60;
     }
     private moveUp(){
         //this.ball.setVelocity(0,this.velocity * -1);
@@ -229,5 +237,7 @@ export class GameScene extends Phaser.Scene{
         this.moveTime=0;
     }
 
-
+    private pickUpStar(){
+        console.log("estrella")
+    }
 }
