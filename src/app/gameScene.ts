@@ -6,9 +6,9 @@ import { DropItem } from './clases/drop-item';
 export class GameScene extends Phaser.Scene{
 
 
-    star:Phaser.GameObjects.Image;
+    //star:Phaser.GameObjects.Image;
     //ball : Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
-    //ball : Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    star : Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     anna : Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     //dude : Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     pushedKey: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -16,8 +16,10 @@ export class GameScene extends Phaser.Scene{
     map : Phaser.Tilemaps.Tilemap;
     layer : Phaser.Tilemaps.TilemapLayer;
     action : number =0;
-    moveTime:number=0;
+    moveTime : number=0;
     velocity : number = 50;
+    timeMoving : number = 20;
+    catchStar : number =1;
     constructor() {
         super({ key: 'gameScene' });
         this.setStopAction();
@@ -48,6 +50,9 @@ export class GameScene extends Phaser.Scene{
         let trackLayer=this.map.createLayer("track",[terrain],0,0);
         let wallLayer=this.map.createLayer("wall",[terrain],0,0);
         
+        this.add.grid(160, 160, 320, 320, 16, 16, undefined,undefined,0x00ffffff,200)
+        //0x00b9f2
+
         wallLayer.setCollisionByProperty({collides: true});
         
 
@@ -66,8 +71,9 @@ export class GameScene extends Phaser.Scene{
             this.setStopAction();
         });*/
         
-        this.star=this.add.image(280,230, "star")
-        
+        this.star=this.physics.add.sprite(280,232, "star")
+        //let rectangle = this.add.rectangle(280,230,10,10)
+        this.star.setScale(.8)
        
 
         //animaciones del dude
@@ -98,8 +104,8 @@ export class GameScene extends Phaser.Scene{
             })*/
        //animaciones
 
-       this.anna = this.physics.add.sprite(30,165,"anna")
-       
+       this.anna = this.physics.add.sprite(25,160,"anna")
+       this.anna.body.setSize(10,32,true)
 
        this.physics.add.collider(this.anna,wallLayer,()=>{
            this.setStopAction();
@@ -145,9 +151,6 @@ export class GameScene extends Phaser.Scene{
     }
 
     update() {
-        //this.ball.setGravity(0);
-        //this.ball.body.setVelocity(0,0);
-        //this.dude.body.setVelocity(0,0);
       
         if(this.pushedKey.left.isDown){
             //this.ball.setGravity(0.1)
@@ -185,20 +188,29 @@ export class GameScene extends Phaser.Scene{
             }
             
             this.moveTime --;
-            if(this.moveTime == 0){
+            if(this.moveTime == 0 || this.actionObject.label == "stop"){
                 this.setStopAction();
                 this.anna.setVelocity(0,0)
+                //this.anna.anims.play("stopAnna",true)
+                
             }
             
             //console.log(this.moveTime);
-        }else if(this.actionObject.id ==2){
+        }else if(this.actionObject.id ==2 ){
            
         }
         
         if(this.actionObject.label == "stop"){
             //this.dude.anims.play("stop",true)
+            this.anna.setVelocity(0,0)
             this.anna.anims.play("stopAnna",true)
+            if(this.catchStar > 0){
+                //console.log("no tengo todas las estrellas")
+            }else{
+                //console.log("tengo estrella")
+            }
         }
+        
     }
 
     private moveLeft(){
@@ -207,7 +219,7 @@ export class GameScene extends Phaser.Scene{
         this.dude.anims.play("left",true)*/
         this.anna.setVelocity(this.velocity * -1,0);
         this.anna.play("leftAnna",true)
-        //if(this.moveTime == 0) this.moveTime=10;
+        if(this.moveTime == 0) this.moveTime = this.timeMoving;
     }
     private moveRight(){
         //this.ball.setVelocity(this.velocity,0);
@@ -215,13 +227,14 @@ export class GameScene extends Phaser.Scene{
         this.dude.anims.play("right",true)*/
         this.anna.setVelocity(this.velocity,0);
         this.anna.anims.play("rightAnna",true)
-        if(this.moveTime == 0) this.moveTime=60;
+        if(this.moveTime == 0) this.moveTime = this.timeMoving;
     }
     private moveUp(){
         //this.ball.setVelocity(0,this.velocity * -1);
         //if(this.moveTime == 0) this.moveTime=10;
         this.anna.setVelocity(0,this.velocity *-1)
         this.anna.play("up",true)
+        if(this.moveTime == 0) this.moveTime = this.timeMoving;
     }
 
     private moveDown(){
@@ -229,6 +242,7 @@ export class GameScene extends Phaser.Scene{
         //if(this.moveTime == 0) this.moveTime=10;
         this.anna.setVelocity(0,this.velocity);
         this.anna.play("down",true)
+        if(this.moveTime == 0) this.moveTime = this.timeMoving;
     }
 
     private setStopAction(){
@@ -238,6 +252,9 @@ export class GameScene extends Phaser.Scene{
     }
 
     private pickUpStar(){
-        console.log("estrella")
+        this.star.destroy()
+        this.catchStar --
+        
+       
     }
 }
